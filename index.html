@@ -2,9 +2,6 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <!-- IMPORTANT pour le téléphone -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <title>DEMANDES DE GARDES CS VERDUN</title>
   <style>
     /* ============= BASE ============= */
@@ -182,7 +179,7 @@
 
     /* ============= PARAMÈTRES ADMIN ============= */
     #parametres-panel {
-      max-width: 1200px;              /* même largeur que le planning */
+      max-width: 1200px; /* même largeur max que le planning */
       margin: 14px auto 20px auto;
       padding: 14px;
       background: #ffffff;
@@ -194,12 +191,11 @@
     #parametres-panel h2 {
       margin-top: 0;
     }
-
     .table-admin {
       width: 100%;
       border-collapse: collapse;
       margin-top: 8px;
-      table-layout: fixed;           /* IMPORTANT : on fixe les largeurs */
+      table-layout: fixed;   /* IMPORTANT : permet de fixer les largeurs en % */
     }
     .table-admin th, .table-admin td {
       border: 1px solid #ccc;
@@ -208,21 +204,11 @@
       text-align: left;
     }
 
-    /* Champs */
-    .small-input { width: 70px; }
-    .full-input  { width: 100%; max-width: 220px; }
-    .eye-btn {
-      padding: 3px 6px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8em;
-    }
-
-    /* === RÉPARTITION DES 6 COLONNES AGENTS SUR TOUTE LA LARGEUR ===
-       Les pourcentages ci-dessous font ~100% au total */
+    /* Largeurs harmonisées des 6 colonnes AGENTS
+       (la somme fait 100%) */
     #table-param-agents th:nth-child(1),
     #table-param-agents td:nth-child(1) { /* Agent */
-      width: 40%;
+      width: 32%;
     }
     #table-param-agents th:nth-child(2),
     #table-param-agents td:nth-child(2) { /* Afficher */
@@ -231,7 +217,7 @@
     }
     #table-param-agents th:nth-child(3),
     #table-param-agents td:nth-child(3) { /* Équipe */
-      width: 17%;
+      width: 20%;
     }
     #table-param-agents th:nth-child(4),
     #table-param-agents td:nth-child(4) { /* Quota */
@@ -239,11 +225,20 @@
     }
     #table-param-agents th:nth-child(5),
     #table-param-agents td:nth-child(5) { /* Mot de passe provisoire */
-      width: 15%;
+      width: 18%;
     }
     #table-param-agents th:nth-child(6),
     #table-param-agents td:nth-child(6) { /* Actions */
-      width: 10%;
+      width: 12%;
+    }
+
+    .small-input { width: 70px; }
+    .full-input { width: 100%; max-width: 220px; }
+    .eye-btn {
+      padding: 3px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8em;
     }
   </style>
 </head>
@@ -1197,6 +1192,7 @@
       const badge = document.getElementById("team-badge");
       const ag = currentAgentId ? getAgentById(currentAgentId) : null;
       if (!ag || !ag.team) {
+        // Option A : rien si pas d'équipe
         badge.style.display = "none";
         return;
       }
