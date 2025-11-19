@@ -153,10 +153,33 @@
     .weekend { background: #dbe6ff !important; }
     .holiday { background: #c8f2c8 !important; }
 
+    /* ============= INTERDICTIONS (fond colonne) ============= */
+    .interd-team1 { background: #9dc3e6 !important; }
+    .interd-team2 { background: #ffe699 !important; }
+    .interd-all { background: #f4b184 !important; }
+
+    /* ============= LIGNES STICKY EN PAYSAGE ============= */
+    @media (orientation: landscape) {
+      .weeks-row th:not(.name-header) {
+        position: sticky;
+        top: 0;
+        z-index: 80;
+      }
+      .dates-row th {
+        position: sticky;
+        top: 26px;
+        z-index: 70;
+      }
+      .days-row th {
+        position: sticky;
+        top: 52px;
+        z-index: 60;
+      }
+    }
+
     /* ============= PARAMÈTRES ADMIN ============= */
     #parametres-panel {
-      max-width: 1200px; /* même largeur que le planning */
-      width: 100%;
+      max-width: 900px; /* plus compact */
       margin: 14px auto 20px auto;
       padding: 14px;
       background: #ffffff;
@@ -165,59 +188,24 @@
       display: none;
       font-size: 0.85em;
     }
-  #parametres-panel h2 {
-  margin-top: 0;
-}
-
-/* ====== TABLEAU PARAMÈTRES ADMIN ====== */
-.table-admin {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 8px;
-  table-layout: fixed; /* largeur figée par les colonnes ci-dessous */
-  min-width: 0; /* >>> annule le min-width:3200px du sélecteur "table" <<< */
-}
-
-.table-admin th,
-.table-admin td {
-  border: 1px solid #ccc;
-  padding: 4px;
-  font-size: 0.8em;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Largeurs des 6 colonnes du tableau "Agents"
-   (tu peux les modifier à ta sauce, tant que ça fait ~100%) */
-#table-param-agents th:nth-child(1),
-#table-param-agents td:nth-child(1) { width: 32%; } /* Agent */
-
-#table-param-agents th:nth-child(2),
-#table-param-agents td:nth-child(2) { width: 8%; } /* Afficher */
-
-#table-param-agents th:nth-child(3),
-#table-param-agents td:nth-child(3) { width: 18%; } /* Équipe */
-
-#table-param-agents th:nth-child(4),
-#table-param-agents td:nth-child(4) { width: 10%; } /* Quota */
-
-#table-param-agents th:nth-child(5),
-#table-param-agents td:nth-child(5) { width: 16%; } /* Mot de passe provisoire */
-
-#table-param-agents th:nth-child(6),
-#table-param-agents td:nth-child(6) { width: 16%; } /* Actions */
-
-.small-input { width: 70px; }
-.full-input { width: 100%; max-width: 220px; }
-.eye-btn {
-  padding: 3px 6px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.8em;
-}
- {
+    #parametres-panel h2 {
+      margin-top: 0;
+    }
+    .table-admin {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      table-layout: auto;
+    }
+    .table-admin th, .table-admin td {
+      border: 1px solid #ccc;
+      padding: 4px;
+      font-size: 0.8em;
+      text-align: left;
+    }
+    .small-input { width: 70px; }
+    .full-input { width: 100%; max-width: 220px; }
+    .eye-btn {
       padding: 3px 6px;
       border-radius: 4px;
       cursor: pointer;
@@ -343,23 +331,13 @@
       "1/2 G après-midi"
     ];
 
-    // Jours fériés France 2026–2028 (colonnes en vert)
-const HOLIDAYS = new Set([
-  // 2026
-  "2026-01-01","2026-04-06","2026-05-01","2026-05-08","2026-05-14",
-  "2026-05-25","2026-07-14","2026-08-15","2026-11-01","2026-11-11","2026-12-25",
-
-  // 2027
-  "2027-01-01","2027-03-29","2027-05-01","2027-05-06","2027-05-13",
-  "2027-05-24","2027-07-14","2027-08-15","2027-11-01","2027-11-11","2027-12-25",
-
-  // 2028
-  "2028-01-01","2028-04-17","2028-05-01","2028-05-08","2028-05-25",
-  "2028-06-05","2028-07-14","2028-08-15","2028-11-01","2028-11-11","2028-12-25"
-]);
+    // Jours fériés exemple
+    const HOLIDAYS = new Set([
+      "2026-01-01"
+    ]);
 
     /* ===============================
-       AGENTS
+       AGENTS (nom, équipe, quota, etc.)
        =============================== */
     let agents = [];
 
@@ -423,6 +401,7 @@ const HOLIDAYS = new Set([
     /* ===============================
        DATA PLANNING
        =============================== */
+    // data[monthId][dateISO][agentId] = valeur
     let data = {};
 
     function loadData() {
@@ -448,6 +427,7 @@ const HOLIDAYS = new Set([
     /* ===============================
        INTERDICTIONS
        =============================== */
+    // interdictions = [{date:"YYYY-MM-DD", team:"1"/"2"/"TOUS", type:"EQ1"/"EQ2"/"COMMUNE"/"AUTRE", note:""}]
     let interdictions = [];
 
     function loadInterdictions() {
@@ -488,9 +468,11 @@ const HOLIDAYS = new Set([
       if (!its.length) return [];
       const team = agent.team || 0;
 
+      // Commune ou autre => bloque tout le monde
       const commune = its.filter(it => it.type === "COMMUNE" || it.type === "AUTRE");
       if (commune.length) return commune;
 
+      // Sinon, blocage par équipe ou TOUS
       return its.filter(it => it.team === "TOUS" || (team && it.team === String(team)));
     }
 
@@ -545,7 +527,7 @@ const HOLIDAYS = new Set([
     let currentYear = YEARS[0];
     let currentMonthIndex = 0;
     let currentMonthKey = monthId(currentYear, currentMonthIndex);
-    let currentMode = "agent";
+    let currentMode = "agent"; // "agent" ou "admin"
     let currentAgentId = "";
 
     /* ===============================
@@ -565,6 +547,7 @@ const HOLIDAYS = new Set([
       if (!data[monthKey][dateISO]) data[monthKey][dateISO] = {};
       const dayData = data[monthKey][dateISO];
 
+      // Interdictions
       if (newValue !== "") {
         const its = getInterdictionsForAgent(dateISO, ag);
         if (its.length) {
@@ -573,12 +556,14 @@ const HOLIDAYS = new Set([
         }
       }
 
+      // 24h déjà posé
       for (const otherId in dayData) {
         if (otherId !== agentId && dayData[otherId] === "Garde 24" && newValue !== "") {
           return "Ce créneau est impossible. Déjà un agent en place.";
         }
       }
 
+      // On veut poser 24h alors qu'il y a déjà quelque chose
       if (newValue === "Garde 24") {
         for (const otherId in dayData) {
           if (otherId !== agentId && dayData[otherId] !== "") {
@@ -587,6 +572,7 @@ const HOLIDAYS = new Set([
         }
       }
 
+      // Incompatibilités entre agents
       for (const otherId in dayData) {
         if (otherId === agentId) continue;
         const val = dayData[otherId];
@@ -601,6 +587,7 @@ const HOLIDAYS = new Set([
         if (newValue === "1/2 G après-midi" && val === "1/2 G après-midi")
           return "Ce créneau est impossible. Déjà un agent en place.";
 
+        // 12J avec demi-journées
         if (newValue === "Garde 12 J" &&
             (val === "1/2 G matin" || val === "1/2 G après-midi"))
           return "Ce créneau est impossible. Déjà un agent en place.";
@@ -609,6 +596,7 @@ const HOLIDAYS = new Set([
           return "Ce créneau est impossible. Déjà un agent en place.";
       }
 
+      // Quota
       const quota = ag.quota || 0;
       const total = totalGardes(agentId, monthKey);
       const ancien = gardeValue(oldValue);
@@ -661,6 +649,63 @@ const HOLIDAYS = new Set([
     }
 
     /* ===============================
+       MISE À JOUR EN-TÊTES JOURS
+       =============================== */
+    function updateDayHeaders() {
+      const table = document.getElementById("planning");
+      const rowDates = table.querySelector("tr.dates-row");
+      if (!rowDates) return;
+      const ths = rowDates.querySelectorAll("th[data-date]");
+      ths.forEach(th => {
+        const dateISO = th.getAttribute("data-date");
+        const obj = (data[currentMonthKey] && data[currentMonthKey][dateISO]) || {};
+        let has = false;
+        for (const k in obj) {
+          if (obj[k]) { has = true; break; }
+        }
+        th.style.color = has ? "red" : "black";
+      });
+    }
+
+    /* ===============================
+       COLORATION DES INTERDICTIONS
+       =============================== */
+    function applyInterdictionStyles() {
+      const table = document.getElementById("planning");
+      const datesRow = table.querySelector("tr.dates-row");
+      const daysRow = table.querySelector("tr.days-row");
+      const emptyRow = table.querySelector("tr.empty-row");
+      if (!datesRow || !daysRow || !emptyRow) return;
+
+      const dateHeaders = Array.from(datesRow.querySelectorAll("th[data-date]"));
+      const rows = table.rows;
+
+      dateHeaders.forEach((th, idx) => {
+        const dateISO = th.getAttribute("data-date");
+        const cls = getInterdictionColorForDate(dateISO);
+        if (!cls) return;
+
+        // dates
+        th.classList.add(cls);
+        // jours
+        const dayCell = daysRow.cells[idx+1];
+        if (dayCell) dayCell.classList.add(cls);
+        // ligne vide
+        const eCell = emptyRow.cells[idx+1];
+        if (eCell) eCell.classList.add(cls);
+        // lignes agents
+        for (let r = 4; r < rows.length; r++) {
+          const row = rows[r];
+          const cell = row.cells[idx+1];
+          if (!cell) continue;
+          const sel = cell.querySelector("select");
+          if (sel && sel.value) continue; // laisser la couleur de garde si occupé
+          cell.classList.add(cls);
+        }
+      });
+    }
+
+    /* ===============================
        CONSTRUCTION DU MOIS
        =============================== */
     function buildMonth(year, monthIndex) {
@@ -674,12 +719,14 @@ const HOLIDAYS = new Set([
 
       const nbDays = new Date(year, monthIndex+1, 0).getDate();
 
+      // Pré-calcul semaines
       const weekNumbers = [];
       for (let d = 1; d <= nbDays; d++) {
         const dt = new Date(year, monthIndex, d);
         weekNumbers.push(getISOWeek(dt));
       }
 
+      // LIGNE SEMAINES + CELLULE AGENTS
       const trWeeks = document.createElement("tr");
       trWeeks.className = "weeks-row";
 
@@ -702,6 +749,7 @@ const HOLIDAYS = new Set([
       }
       table.appendChild(trWeeks);
 
+      // LIGNE DATES (numéros)
       const trDates = document.createElement("tr");
       trDates.className = "dates-row";
       for (let d = 1; d <= nbDays; d++) {
@@ -716,6 +764,7 @@ const HOLIDAYS = new Set([
       }
       table.appendChild(trDates);
 
+      // LIGNE JOURS (lun, mar, ...)
       const trDays = document.createElement("tr");
       trDays.className = "days-row";
       for (let d = 1; d <= nbDays; d++) {
@@ -729,6 +778,7 @@ const HOLIDAYS = new Set([
       }
       table.appendChild(trDays);
 
+      // LIGNE VIDE
       const trEmpty = document.createElement("tr");
       trEmpty.className = "empty-row";
       for (let d = 1; d <= nbDays; d++) {
@@ -736,6 +786,7 @@ const HOLIDAYS = new Set([
       }
       table.appendChild(trEmpty);
 
+      // LIGNES AGENTS (uniquement visibles)
       const visibleAgents = agents
         .filter(a => a.visible)
         .slice()
@@ -795,6 +846,7 @@ const HOLIDAYS = new Set([
             data[currentMonthKey][dateISO][agent.id] = newVal;
             applyCellStyle(newVal, td, select);
             saveData();
+            updateDayHeaders();
           });
 
           td.appendChild(select);
@@ -802,43 +854,11 @@ const HOLIDAYS = new Set([
         }
 
         table.appendChild(tr);
-      })
-    }
-
-    /* Coloriage des colonnes d'interdiction */
-function colorInterdictions() {
-  const table = document.getElementById("planning");
-  if (!table) return;
-
-  const datesRow = table.querySelector("tr.dates-row");
-  const daysRow = table.querySelector("tr.days-row");
-  const emptyRow = table.querySelector("tr.empty-row");
-  if (!datesRow || !daysRow || !emptyRow) return;
-
-  const rows = table.rows;
-  const dateHeaders = datesRow.querySelectorAll("th[data-date]");
-
-  dateHeaders.forEach((th, index) => {
-    const dateISO = th.dataset.date;
-    const cls = getInterdictionColorForDate(dateISO);
-    if (!cls) return;
-
-    // En-têtes date / jour / ligne vide
-    th.classList.add(cls);
-    const dayCell = daysRow.cells[index + 1];
-    const emptyCell = emptyRow.cells[index + 1];
-    if (dayCell) dayCell.classList.add(cls);
-    if (emptyCell) emptyCell.classList.add(cls);
-
-    // Cellules des agents (on ne colorie QUE si pas de garde dedans)
-    for (let r = 4; r < rows.length; r++) {
-      const cell = rows[r].cells[index + 1];
-      if (!cell) continue;
-      const sel = cell.querySelector("select");
-      if (sel && sel.value) continue; // garde posée -> on garde la couleur de garde
-      cell.classList.add(cls);
       });
-}
+
+      updateDayHeaders();
+      applyInterdictionStyles();
+    }
 
     /* ===============================
        PARAMÈTRES : AGENTS
@@ -861,6 +881,7 @@ function colorInterdictions() {
       sorted.forEach(ag => {
         const tr = document.createElement("tr");
 
+        // nom
         const tdName = document.createElement("td");
         const inpName = document.createElement("input");
         inpName.className = "full-input";
@@ -875,6 +896,7 @@ function colorInterdictions() {
         tdName.appendChild(inpName);
         tr.appendChild(tdName);
 
+        // afficher
         const tdVisible = document.createElement("td");
         const chk = document.createElement("input");
         chk.type = "checkbox";
@@ -888,6 +910,7 @@ function colorInterdictions() {
         tdVisible.appendChild(chk);
         tr.appendChild(tdVisible);
 
+        // équipe
         const tdTeam = document.createElement("td");
         const selTeam = document.createElement("select");
         ["0","1","2"].forEach(v=>{
@@ -906,6 +929,7 @@ function colorInterdictions() {
         tdTeam.appendChild(selTeam);
         tr.appendChild(tdTeam);
 
+        // quota
         const tdQuota = document.createElement("td");
         const inpQuota = document.createElement("input");
         inpQuota.type = "number";
@@ -920,6 +944,7 @@ function colorInterdictions() {
         tdQuota.appendChild(inpQuota);
         tr.appendChild(tdQuota);
 
+        // mdp provisoire
         const tdPwd = document.createElement("td");
         const inpPwd = document.createElement("input");
         inpPwd.type = "text";
@@ -932,6 +957,7 @@ function colorInterdictions() {
         tdPwd.appendChild(inpPwd);
         tr.appendChild(tdPwd);
 
+        // actions
         const tdActions = document.createElement("td");
         const btnReset = document.createElement("button");
         btnReset.className = "eye-btn";
@@ -961,6 +987,7 @@ function colorInterdictions() {
       });
     }
 
+    /* Ajouter un agent */
     document.getElementById("btn-add-agent").addEventListener("click", () => {
       const id = "a" + Date.now();
       agents.push({
@@ -981,6 +1008,10 @@ function colorInterdictions() {
     /* ===============================
        PARAMÈTRES : INTERDICTIONS
        =============================== */
+    function isoToDateInput(iso) {
+      return iso; // yyyy-mm-dd compatible input type="date"
+    }
+
     function buildInterdictionsTable() {
       const table = document.getElementById("table-interdictions");
       table.innerHTML = `
@@ -996,10 +1027,11 @@ function colorInterdictions() {
       interdictions.forEach((it, idx) => {
         const tr = document.createElement("tr");
 
+        // Date
         const tdDate = document.createElement("td");
         const inpDate = document.createElement("input");
         inpDate.type = "date";
-        inpDate.value = it.date;
+        inpDate.value = isoToDateInput(it.date);
         inpDate.className = "small-input";
         inpDate.addEventListener("change", () => {
           if (!inpDate.value) {
@@ -1014,6 +1046,7 @@ function colorInterdictions() {
         tdDate.appendChild(inpDate);
         tr.appendChild(tdDate);
 
+        // Équipe
         const tdTeam = document.createElement("td");
         const selTeam = document.createElement("select");
         ["1","2","TOUS"].forEach(v => {
@@ -1031,6 +1064,7 @@ function colorInterdictions() {
         tdTeam.appendChild(selTeam);
         tr.appendChild(tdTeam);
 
+        // Type
         const tdType = document.createElement("td");
         const selType = document.createElement("select");
         const types = [
@@ -1055,6 +1089,7 @@ function colorInterdictions() {
         tdType.appendChild(selType);
         tr.appendChild(tdType);
 
+        // Note
         const tdNote = document.createElement("td");
         const inpNote = document.createElement("input");
         inpNote.type = "text";
@@ -1071,6 +1106,7 @@ function colorInterdictions() {
         tdNote.appendChild(inpNote);
         tr.appendChild(tdNote);
 
+        // Supprimer
         const tdDel = document.createElement("td");
         const btnDel = document.createElement("button");
         btnDel.className = "eye-btn";
@@ -1110,6 +1146,7 @@ function colorInterdictions() {
         sel.appendChild(o);
       });
 
+      // garder selection si possible
       if (currentAgentId) {
         const ag = getAgentById(currentAgentId);
         if (ag && ag.visible) {
@@ -1126,6 +1163,7 @@ function colorInterdictions() {
       const badge = document.getElementById("team-badge");
       const ag = currentAgentId ? getAgentById(currentAgentId) : null;
       if (!ag || !ag.team) {
+        // Option A : rien si pas d'équipe
         badge.style.display = "none";
         return;
       }
@@ -1176,6 +1214,7 @@ function colorInterdictions() {
       updateTeamBadge();
     });
 
+    /* Changer mot de passe agent */
     document.getElementById("btn-change-pwd").addEventListener("click", () => {
       if (!currentAgentId) {
         alert("Connectez-vous d'abord.");
@@ -1244,6 +1283,7 @@ function colorInterdictions() {
     document.getElementById("btn-mode-agent").addEventListener("click", setModeAgent);
     document.getElementById("btn-mode-admin").addEventListener("click", setModeAdmin);
 
+    /* Changer mot de passe admin */
     document.getElementById("btn-change-admin-pwd").addEventListener("click", () => {
       const old = prompt("Ancien mot de passe administrateur :");
       if (old === null) return;
