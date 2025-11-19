@@ -805,6 +805,41 @@ const HOLIDAYS = new Set([
       });
     }
 
+    /* Coloriage des colonnes d'interdiction */
+function colorInterdictions() {
+  const table = document.getElementById("planning");
+  if (!table) return;
+
+  const datesRow = table.querySelector("tr.dates-row");
+  const daysRow = table.querySelector("tr.days-row");
+  const emptyRow = table.querySelector("tr.empty-row");
+  if (!datesRow || !daysRow || !emptyRow) return;
+
+  const rows = table.rows;
+  const dateHeaders = datesRow.querySelectorAll("th[data-date]");
+
+  dateHeaders.forEach((th, index) => {
+    const dateISO = th.dataset.date;
+    const cls = getInterdictionColorForDate(dateISO);
+    if (!cls) return;
+
+    // En-têtes date / jour / ligne vide
+    th.classList.add(cls);
+    const dayCell = daysRow.cells[index + 1];
+    const emptyCell = emptyRow.cells[index + 1];
+    if (dayCell) dayCell.classList.add(cls);
+    if (emptyCell) emptyCell.classList.add(cls);
+
+    // Cellules des agents (on ne colorie QUE si pas de garde dedans)
+    for (let r = 4; r < rows.length; r++) {
+      const cell = rows[r].cells[index + 1];
+      if (!cell) continue;
+      const sel = cell.querySelector("select");
+      if (sel && sel.value) continue; // garde posée -> on garde la couleur de garde
+      cell.classList.add(cls);
+      });
+}
+
     /* ===============================
        PARAMÈTRES : AGENTS
        =============================== */
