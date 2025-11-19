@@ -199,7 +199,31 @@
   margin-top: 8px;
   table-layout: fixed; /* important : on fixe les largeurs de colonnes */
 }
-
+/* largeur des colonnes AGENTS (6 colonnes) */
+#table-param-agents th:nth-child(1),
+#table-param-agents td:nth-child(1) { /* Agent */
+  width: 18%;
+}
+#table-param-agents th:nth-child(2),
+#table-param-agents td:nth-child(2) { /* Afficher */
+  width: 6%;
+}
+#table-param-agents th:nth-child(3),
+#table-param-agents td:nth-child(3) { /* Équipe */
+  width: 13%;
+}
+#table-param-agents th:nth-child(4),
+#table-param-agents td:nth-child(4) { /* Quota */
+  width: 18%;
+}
+#table-param-agents th:nth-child(5),
+#table-param-agents td:nth-child(5) { /* Mot de passe provisoire */
+  width: 15%;
+}
+#table-param-agents th:nth-child(6),
+#table-param-agents td:nth-child(6) { /* Actions */
+  width: 10%;
+}
 .table-admin th,
 .table-admin td {
   border: 1px solid #ccc;
@@ -208,31 +232,7 @@
   text-align: left;
 }
 
-/* largeur des colonnes AGENTS (6 colonnes) */
-#table-param-agents th:nth-child(1),
-#table-param-agents td:nth-child(1) { /* Agent */
-  width: 15%;
-}
-#table-param-agents th:nth-child(2),
-#table-param-agents td:nth-child(2) { /* Afficher */
-  width: 7%;
-}
-#table-param-agents th:nth-child(3),
-#table-param-agents td:nth-child(3) { /* Équipe */
-  width: 10%;
-}
-#table-param-agents th:nth-child(4),
-#table-param-agents td:nth-child(4) { /* Quota */
-  width: 10%;
-}
-#table-param-agents th:nth-child(5),
-#table-param-agents td:nth-child(5) { /* Mot de passe provisoire */
-  width: 18%;
-}
-#table-param-agents th:nth-child(6),
-#table-param-agents td:nth-child(6) { /* Actions */
-  width: 15%;
-}
+
 
 /* largeur des colonnes INTERDICTIONS (5 colonnes) */
 #table-interdictions th:nth-child(1),
