@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>DEMANDES DEu GARDES CS VERDUN</title>
+  <title>DEMANDES DE GARDES CS VERDUN</title>
   <style>
     /* ============= BASE ============= */
     * { box-sizing: border-box; }
@@ -165,16 +165,17 @@
       display: none;
       font-size: 0.85em;
     }
-    #parametres-panel h2 {
+  #parametres-panel h2 {
   margin-top: 0;
 }
 
-/* TABLEAU ADMIN GÉNÉRAL */
+/* ====== TABLEAU PARAMÈTRES ADMIN ====== */
 .table-admin {
   width: 100%;
   border-collapse: collapse;
   margin-top: 8px;
-  table-layout: fixed; /* les largeurs sont respectées */
+  table-layout: fixed; /* largeur figée par les colonnes ci-dessous */
+  min-width: 0; /* >>> annule le min-width:3200px du sélecteur "table" <<< */
 }
 
 .table-admin th,
@@ -188,8 +189,8 @@
   text-overflow: ellipsis;
 }
 
-/* ==== Largeurs des 6 colonnes du tableau "Agents" ==== */
-/* (les % ci-dessous font 100% au total, tu pourras les modifier) */
+/* Largeurs des 6 colonnes du tableau "Agents"
+   (tu peux les modifier à ta sauce, tant que ça fait ~100%) */
 #table-param-agents th:nth-child(1),
 #table-param-agents td:nth-child(1) { width: 32%; } /* Agent */
 
@@ -197,36 +198,26 @@
 #table-param-agents td:nth-child(2) { width: 8%; } /* Afficher */
 
 #table-param-agents th:nth-child(3),
-#table-param-agents td:nth-child(3) { width: 15%; } /* Équipe */
+#table-param-agents td:nth-child(3) { width: 18%; } /* Équipe */
 
 #table-param-agents th:nth-child(4),
 #table-param-agents td:nth-child(4) { width: 10%; } /* Quota */
 
 #table-param-agents th:nth-child(5),
-#table-param-agents td:nth-child(5) { width: 15%; } /* Mot de passe provisoire */
+#table-param-agents td:nth-child(5) { width: 16%; } /* Mot de passe provisoire */
 
 #table-param-agents th:nth-child(6),
-#table-param-agents td:nth-child(6) { width: 20%; } /* Actions */
+#table-param-agents td:nth-child(6) { width: 16%; } /* Actions */
 
-/* Champs dans ce tableau : ils s'adaptent à la largeur des colonnes */
-#table-param-agents .small-input {
-  width: 100%;
-  max-width: 100%;
+.small-input { width: 70px; }
+.full-input { width: 100%; max-width: 220px; }
+.eye-btn {
+  padding: 3px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8em;
 }
-
-#table-param-agents .full-input {
-  width: 100%;
-  max-width: 100%;
-}
-
-#table-param-agents .eye-btn {
-  font-size: 0.75em;
-  padding: 3px 4px;
-}
-
-    .small-input { width: 70px; }
-    .full-input { width: 100%; max-width: 220px; }
-    .eye-btn {
+ {
       padding: 3px 6px;
       border-radius: 4px;
       cursor: pointer;
