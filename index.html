@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>DEMANDES DEu GARDES CS VERDUN</title>
+  <title>DEMANDES DE GARDES CS VERDUN</title>
   <style>
     /* ============= BASE ============= */
     * { box-sizing: border-box; }
@@ -179,7 +179,7 @@
 
 /* ============= PARAMÈTRES ADMIN ============= */
 #parametres-panel {
-  max-width: 1200px;
+  max-width: 1200px; /* même largeur que le planning */
   margin: 14px auto 20px auto;
   padding: 14px;
   background: #ffffff;
@@ -192,11 +192,13 @@
   margin-top: 0;
 }
 
+/* tableau admin sur toute la largeur du panneau */
 .table-admin {
   width: 100%;
   border-collapse: collapse;
   margin-top: 8px;
-  table-layout: fixed;
+  table-layout: fixed; /* on fige les largeurs */
+  min-width: 0; /* IMPORTANT : annule le min-width:3200px de "table" */
 }
 .table-admin th,
 .table-admin td {
@@ -210,23 +212,25 @@
 }
 
 /* Largeurs des 6 colonnes du tableau "Agents" */
+/* (tu pourras ajuster les pourcentages à ta sauce) */
 #table-param-agents th:nth-child(1),
-#table-param-agents td:nth-child(1) { width: 35%; }
+#table-param-agents td:nth-child(1) { width: 35%; } /* Agent */
 
 #table-param-agents th:nth-child(2),
-#table-param-agents td:nth-child(2) { width: 8%; }
+#table-param-agents td:nth-child(2) { width: 8%; } /* Afficher */
 
 #table-param-agents th:nth-child(3),
-#table-param-agents td:nth-child(3) { width: 15%; }
+#table-param-agents td:nth-child(3) { width: 15%; } /* Équipe */
 
 #table-param-agents th:nth-child(4),
-#table-param-agents td:nth-child(4) { width: 10%; }
+#table-param-agents td:nth-child(4) { width: 10%; } /* Quota */
 
 #table-param-agents th:nth-child(5),
-#table-param-agents td:nth-child(5) { width: 16%; }
+#table-param-agents td:nth-child(5) { width: 16%; } /* Mot de passe provisoire */
 
 #table-param-agents th:nth-child(6),
-#table-param-agents td:nth-child(6) { width: 16%; }
+#table-param-agents td:nth-child(6) { width: 16%; } /* Actions */
+
 
 .small-input { width: 70px; }
 .full-input { width: 100%; max-width: 220px; }
