@@ -499,6 +499,50 @@
 .lg-interd2 { background:#ffe699; }
 .lg-interdall { background:#f4b184; }
 
+    #legend-panel {
+  max-width: 1200px;
+  margin: 15px auto;
+  padding: 10px;
+  text-align: left;
+}
+
+.legend-box {
+  background: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  font-size: 0.9em;
+}
+
+.legend-box h3 {
+  margin-top: 0;
+  font-size: 1.1em;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.legend-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.legend-box li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+.leg-box {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  display: inline-block;
+  border: 1px solid #888;
+}
+
   </style>
 </head>
 <body>
@@ -551,6 +595,28 @@
   <div class="wrapper">
     <table id="planning"></table>
   </div>
+
+  /* ===============================
+       INFOS PLANNING / LÉGENDE
+       =============================== */
+    (function() {
+      const btnInfos = document.getElementById("btn-infos");
+      const legendPanel = document.getElementById("legend-panel");
+      if (!btnInfos || !legendPanel) return;
+
+      // caché au départ
+      legendPanel.style.display = "none";
+
+      btnInfos.addEventListener("click", () => {
+        if (legendPanel.style.display === "none" || legendPanel.style.display === "") {
+          legendPanel.style.display = "block";
+          btnInfos.classList.add("active");
+        } else {
+          legendPanel.style.display = "none";
+          btnInfos.classList.remove("active");
+        }
+      });
+    })();
 
   <!-- ===== LÉGENDE PLANNING ===== -->
 <div id="legend-planning">
@@ -1786,11 +1852,10 @@ const HOLIDAYS = new Set([
        BOUTON INFOS PLANNING
        =============================== */
     function toggleInfosPlanning() {
-      const panel = document.getElementById("infos-planning");
-      if (!panel) return;
-      const isHidden = (panel.style.display === "" || panel.style.display === "none");
-      panel.style.display = isHidden ? "block" : "none";
-    }
+  const p = document.getElementById("legend-panel");
+  if (!p) return;
+  p.style.display = (p.style.display === "none" || p.style.display === "") ? "block" : "none";
+}
 
     document.getElementById("btn-infos").addEventListener("click", toggleInfosPlanning);
 
