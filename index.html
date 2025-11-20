@@ -188,6 +188,68 @@
   display: none;
   font-size: 0.85em;
 }
+
+/* ============= LÉGENDE PLANNING ============= */
+#legend-panel {
+  max-width: 1200px;
+  margin: 8px auto 16px auto;
+  padding: 10px 12px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.15);
+  font-size: 0.85em;
+  display: none; /* caché par défaut, on l'affiche avec le bouton Infos */
+}
+
+.legend-title {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.legend-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.legend-group {
+  margin-right: 24px;
+}
+
+.legend-group-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+  text-decoration: underline;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.legend-color {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid #999;
+}
+
+/* on reprend les vraies couleurs du planning */
+.legend-24 { background: #ffd39b; }
+.legend-12j { background: #40e0d0; }
+.legend-12n { background: #d9d9d9; }
+.legend-dm { background: #e6ccff; }
+.legend-da { background: #006a4e; }
+
+.legend-weekend { background: #dbe6ff; }
+.legend-holiday { background: #c8f2c8; }
+
+.legend-team1 { background: #9dc3e6; }
+.legend-team2 { background: #ffe699; }
+.legend-interdall { background: #f4b184; }
+
 #parametres-panel h2 {
   margin-top: 0;
 }
@@ -1731,6 +1793,28 @@ const HOLIDAYS = new Set([
     }
 
     document.getElementById("btn-infos").addEventListener("click", toggleInfosPlanning);
+
+    /* ===============================
+       INFOS PLANNING / LÉGENDE
+       =============================== */
+    (function() {
+      const btnInfos = document.getElementById("btn-infos");
+      const legendPanel = document.getElementById("legend-panel");
+      if (!btnInfos || !legendPanel) return;
+
+      // caché au départ
+      legendPanel.style.display = "none";
+
+      btnInfos.addEventListener("click", () => {
+        if (legendPanel.style.display === "none" || legendPanel.style.display === "") {
+          legendPanel.style.display = "block";
+          btnInfos.classList.add("active");
+        } else {
+          legendPanel.style.display = "none";
+          btnInfos.classList.remove("active");
+        }
+      });
+    })();
 
     /* ===============================
        INIT GLOBAL
