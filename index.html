@@ -177,30 +177,28 @@
       }
     }
 
-    /* ============= PARAMÈTRES ADMIN ============= */
-    #parametres-panel {
-      max-width: 900px; /* plus compact */
-      margin: 14px auto 20px auto;
-      padding: 14px;
-      background: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 0 6px rgba(0,0,0,0.2);
-      display: none;
-      font-size: 0.85em;
-    }
-    #parametres-panel h2 {
+ /* ============= PARAMÈTRES ADMIN ============= */
+#parametres-panel {
+  max-width: 1200px; /* même largeur que le planning */
+  margin: 14px auto 20px auto;
+  padding: 14px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  display: none;
+  font-size: 0.85em;
+}
+#parametres-panel h2 {
   margin-top: 0;
 }
 
-/* ====== TABLEAU PARAMÈTRES ADMIN ====== */
+/* tableau admin en pleine largeur du panneau */
 .table-admin {
   width: 100%;
   border-collapse: collapse;
   margin-top: 8px;
-  table-layout: fixed; /* largeur figée par les colonnes ci-dessous */
-  min-width: 0; /* >>> annule le min-width:3200px du sélecteur "table" <<< */
+  table-layout: fixed;
 }
-
 .table-admin th,
 .table-admin td {
   border: 1px solid #ccc;
@@ -212,22 +210,21 @@
   text-overflow: ellipsis;
 }
 
-/* Largeurs des 6 colonnes du tableau "Agents"
-   (tu peux les modifier à ta sauce, tant que ça fait ~100%) */
+/* Largeurs des 6 colonnes du tableau "Agents" */
 #table-param-agents th:nth-child(1),
-#table-param-agents td:nth-child(1) { width: 32%; } /* Agent */
+#table-param-agents td:nth-child(1) { width: 35%; } /* Agent */
 
 #table-param-agents th:nth-child(2),
 #table-param-agents td:nth-child(2) { width: 8%; } /* Afficher */
 
-#table-param-agents th:nth-child(3),
-#table-param-agents td:nth-child(3) { width: 18%; } /* Équipe */
+#table-param-agets th:nth-child(3),
+#table-param-agents td:nth-child(3) { width: 15%; } /* Équipe */
 
 #table-param-agents th:nth-child(4),
 #table-param-agents td:nth-child(4) { width: 10%; } /* Quota */
 
 #table-param-agents th:nth-child(5),
-#table-param-agents td:nth-child(5) { width: 16%; } /* Mot de passe provisoire */
+#table-param-agents td:nth-child(5) { width: 16%; } /* MDP provisoire */
 
 #table-param-agents th:nth-child(6),
 #table-param-agents td:nth-child(6) { width: 16%; } /* Actions */
