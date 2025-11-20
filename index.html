@@ -387,6 +387,56 @@
   margin-bottom: 6px;
 }
 
+/* ===== LÉGENDE STYLÉE ===== */
+#legend-planning {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 15px 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  font-size: 0.9em;
+}
+
+#legend-planning h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  text-align: center;
+  color: #0c1f45;
+  font-weight: bold;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+.legend-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid #333;
+}
+
+/* Couleurs des gardes (identiques à ton tableau) */
+.lg-24 { background:#ffd39b; }
+.lg-12j { background:#40e0d0; }
+.lg-12n { background:#d9d9d9; }
+.lg-matin { background:#e6ccff; }
+.lg-am { background:#006a4e; border-color:#006a4e; }
+
+/* Week-end / fériés */
+.lg-weekend { background:#dbe6ff; }
+.lg-ferie { background:#c8f2c8; }
+
+/* Interdictions */
+.lg-interd1 { background:#9dc3e6; }
+.lg-interd2 { background:#ffe699; }
+.lg-interdall { background:#f4b184; }
+
   </style>
 </head>
 <body>
@@ -439,6 +489,51 @@
   <div class="wrapper">
     <table id="planning"></table>
   </div>
+
+  <!-- ===== LÉGENDE PLANNING ===== -->
+<div id="legend-planning">
+  <h3>Légende du planning</h3>
+
+  <div class="legend-row">
+    <span class="legend-box lg-24"></span> Garde 24h
+  </div>
+
+  <div class="legend-row">
+    <span class="legend-box lg-12j"></span> Garde 12h Jour
+  </div>
+
+  <div class="legend-row">
+    <span class="legend-box lg-12n"></span> Garde 12h Nuit
+  </div>
+
+  <div class="legend-row">
+    <span class="legend-box lg-matin"></span> 1/2 Garde matin
+  </div>
+
+  <div class="legend-row">
+    <span class="legend-box lg-am"></span> 1/2 Garde après-midi
+  </div>
+
+  <div class="legend-row">
+    <span class="legend-box lg-weekend"></span> Week-end
+  </div>
+
+  <div class="legend-row">
+    <span class="legend-box lg-ferie"></span> Jour férié
+  </div>
+
+  <div class="legend-row">
+    <span class="legend-box lg-interd1"></span> Interdiction équipe 1
+  </div>
+
+  <div class="legend-row">
+    <span class="legend-box lg-interd2"></span> Interdiction équipe 2
+  </div>
+
+  <div class="legend-row">
+    <span class="legend-box lg-interdall"></span> Interdiction commune
+  </div>
+</div>
 
   <!-- Panneau d'informations du planning (visible pour tous) -->
   <div id="infos-planning">
