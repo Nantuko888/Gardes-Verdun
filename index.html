@@ -271,6 +271,47 @@
       margin-bottom: 4px;
     }
 
+    /* ===============================
+   INFO PLANNING POPUP
+   =============================== */
+#info-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  width: 280px;
+  font-size: 0.9em;
+  display: none;
+  z-index: 9999;
+}
+
+#info-popup h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #0c1f45;
+}
+
+#info-popup ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+#info-popup li {
+  margin-bottom: 4px;
+}
+
+#btn-close-info {
+  float: right;
+  cursor: pointer;
+  color: #c00;
+  font-weight: bold;
+  margin-top: -4px;
+}
+
   </style>
 </head>
 <body>
@@ -373,6 +414,34 @@
       </button>
     </div>
   </div>
+
+    <!-- ===============================
+     POPUP INFOS PLANNING
+     =============================== -->
+<div id="infos-planning" 
+     style="
+       display:none;
+       position:fixed;
+       bottom:20px;
+       left:20px;
+       background:white;
+       padding:12px 16px;
+       border-radius:8px;
+       box-shadow:0 0 10px rgba(0,0,0,0.25);
+       font-size:0.9em;
+       z-index:9999;
+       max-width:260px;
+     ">
+  <h4 style="margin-top:0;">Infos planning</h4>
+  <ul style="padding-left:18px; margin:0;">
+    <li><b>Garde 24</b> : 2 points</li>
+    <li><b>Garde 12 J</b> : 1 point</li>
+    <li><b>Garde 12 N</b> : 1 point</li>
+    <li><b>1/2 matin</b> : 0.5 point</li>
+    <li><b>1/2 après-midi</b> : 0.5 point</li>
+    <li><b>Couleurs</b> : week-end bleu,<br>fériés vert,<br>interdictions orange</li>
+  </ul>
+</div>
 
   <script>
     /* ===============================
@@ -1498,5 +1567,30 @@ const HOLIDAYS = new Set([
 
     window.addEventListener("load", initAll);
   </script>
+    
+    <!-- ===== POPUP INFOS PLANNING ===== -->
+<div id="info-popup" style="
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  font-size: 0.9em;
+  display: none;
+  z-index: 9999;
+">
+  <h3 style="margin-top:0; font-size:1em;">Infos planning</h3>
+  <ul style="margin:0; padding-left:18px;">
+    <li><b>Garde 24</b> : 2 points</li>
+    <li><b>Garde 12 J</b> : 1 point</li>
+    <li><b>Garde 12 N</b> : 1 point</li>
+    <li><b>1/2 G matin</b> : 0,5 point</li>
+    <li><b>1/2 G après-midi</b> : 0,5 point</li>
+    <li><b>Couleurs</b> : week-end bleu, fériés vert, manœuvres orange…</li>
+  </ul>
+</div>
+
 </body>
 </html>
